@@ -10,11 +10,6 @@ app.get('/projects', (req,res) => {
   return res.json(projects);
 });
 
-app.get('/projects/:id', (req, res) => {
-  const { id } = req.params;
-
-  return res.json(projects[id]);
-});
 
 app.post('/projects', (req, res) => {
   const { id, title} = req.body;
@@ -33,10 +28,12 @@ app.post('/projects', (req, res) => {
    app.put('/projects/:id', (req, res) => {
      const { id } = req.params;
      const { title } = req.body;
+    
+     const project = projects.find(p => p.id == id);
 
-     projects[id] = title;
-     
-     return res.json(projects);
+      project.title = title;
+      
+      return res.json(projects);
    });
 
 app.listen(3333);
