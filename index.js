@@ -42,7 +42,7 @@ app.post('/projects', (req, res) => {
      const project = projects.find(p => p.id == id);
 
      
-     projects.splice(id, 1);
+     projects.splice(project, 1);
 
      return res.send();
    });
@@ -50,11 +50,9 @@ app.post('/projects', (req, res) => {
    app.post('/projects/:id/tasks', (req, res) => {
      const { id } = req.params;
      const { title } = req.body;
-     const { tasks } = req.body;
+  
 
      const project = projects.find(p => p.id == id);
-
-     const task = tasks.find(t => t.tasks == tasks);
 
      project.task.push(title);
 
