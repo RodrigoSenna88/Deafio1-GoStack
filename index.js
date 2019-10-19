@@ -18,7 +18,8 @@ app.post('/projects', (req, res) => {
      id,
      title,
      task: []
-     }
+     };
+
    projects.push(project);
 
    return res.json(project);
