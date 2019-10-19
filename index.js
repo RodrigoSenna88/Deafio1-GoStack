@@ -11,7 +11,7 @@ app.get('/projects', (req,res) => {
 });
 
 
-app.post('/projects', (req, res) => {
+app.post('/project', (req, res) => {
   const { id, title} = req.body;
  
   const project = {
