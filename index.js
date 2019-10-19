@@ -4,7 +4,31 @@ const app = express();
 
 app.use(express.json());
 
+let numberOfRequests = 0;
+
 const projects = [];
+
+function checkProjectExists(req, res, next) {
+  const { id } = req.params;
+  const project = projects.find(p => p.id == id);
+
+  if (!project) {
+    return res.status(400).json({ error: 'Project not found' });
+  }
+
+  return next();
+};
+
+function logRequests(req,res,next) {
+  numberOfRequests++;
+
+  console.log(`Número de requisições: ${numberOfRequests}`);
+
+  return next();
+}
+
+app.use(logRequests);
+
 
 app.get('/projects', (req,res) => {
   return res.json(projects);
@@ -26,7 +50,7 @@ app.post('/projects', (req, res) => {
   
    });
 
-   app.put('/projects/:id', (req, res) => {
+   app.put('/projects/:id', checkProjectExists, (req, res) => {
      const { id } = req.params;
      const { title } = req.body;
     
@@ -37,7 +61,7 @@ app.post('/projects', (req, res) => {
       return res.json(projects);
    });
 
-   app.delete('/projects/:id', (req, res) => {
+   app.delete('/projects/:id', checkProjectExists, (req, res) => {
      const { id } = req.params;
 
      const project = projects.find(p => p.id == id);
@@ -48,7 +72,7 @@ app.post('/projects', (req, res) => {
      return res.send();
    });
 
-   app.post('/projects/:id/tasks', (req, res) => {
+   app.post('/projects/:id/tasks', checkProjectExists, (req, res) => {
      const { id } = req.params;
      const { title } = req.body;
   
